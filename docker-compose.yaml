@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: school
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app             # ok para hot-reload em dev
+    env_file: .env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    # 👉 Nginx expõe a porta 80 interna; mapeamos para 5173 no host
+    ports:
+      - "5173:80"
+    # ❌ NÃO monte o código fonte aqui – você sobrescreveria /usr/share/nginx/html
+    # volumes:
+    #   - ./frontend:/app
+
+volumes:
+  dbdata:

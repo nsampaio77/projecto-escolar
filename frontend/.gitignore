@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Global ignores
+__pycache__/
+.env
+db.sqlite3
