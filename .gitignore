@@ -1,0 +1,8 @@
+# Global ignores
+__pycache__/
+.env/
+poetry.lock
+db.sqlite3
+./frontend/.env
+.backend/poetry.lock
+.backend/db.sqlite3
